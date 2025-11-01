@@ -5,11 +5,11 @@ package minicircuits;
     Gates included in this file 
 
     . AND
-    . NAND
-    . OR
-    . XOR
-    . XNOR
-    . NOT 
+    . NAND  
+    . OR    
+    . XOR   
+    . XNOR  
+    . NOT   
      
 */
 
@@ -58,9 +58,9 @@ class Gate {
 // ----------------------------------------------------------------------------
 
 
-class AndGate extends Gate {
+class And extends Gate {
     
-    public AndGate(int numOfInputs,int numOfOutputs,boolean defaultPower) {
+    public And(int numOfInputs,int numOfOutputs,boolean defaultPower) {
         super(GateTypes.AND,numOfInputs,numOfOutputs,defaultPower);
     }
     
@@ -83,9 +83,34 @@ class AndGate extends Gate {
     }
 }
 
-class OrGate extends Gate {
+class Nand extends Gate {
     
-    public OrGate(int numOfInputs,int numOfOutputs,boolean defaultPower) {
+    public Nand(int numOfInputs,int numOfOutputs,boolean defaultPower) {
+        super(GateTypes.NAND,numOfInputs,numOfOutputs,defaultPower);
+    }
+    
+    @Override public boolean generateOutput() {
+        
+        boolean output = true;
+        
+        for (int i = 0; i < super.inputs.length; i++) {
+            Gate currentGate = super.inputs[i];
+            
+            if (currentGate != null) {
+                output = output && currentGate.on;
+            } else {
+                System.out.println("empty input");
+                break;
+            }
+        }
+        
+        return !output;
+    }
+}
+
+class Or extends Gate {
+    
+    public Or(int numOfInputs,int numOfOutputs,boolean defaultPower) {
         super(GateTypes.OR,numOfInputs,numOfOutputs,defaultPower);
     }
     
@@ -98,9 +123,46 @@ class OrGate extends Gate {
     }
 }
 
-class NotGate extends Gate {
+class Xor extends Gate {
     
-    public NotGate(boolean defaultPower) {
+    public Xor(int numOfInputs,int numOfOutputs,boolean defaultPower) {
+        super(GateTypes.XOR,numOfInputs,numOfOutputs,defaultPower);
+    }
+    
+    @Override public boolean generateOutput() {
+        boolean isOr = false;
+        boolean isAnd = true;
+        for (int i = 0; i < super.inputs.length; i++) {
+            Gate currentGate = super.inputs[i];
+            if (currentGate != null) { isAnd = isAnd && currentGate.on; }
+            if (currentGate.on) { isOr = true; }
+        }
+        return isOr && !isAnd;
+    }
+}
+
+class Xnor extends Gate {
+    
+    public Xnor(int numOfInputs,int numOfOutputs,boolean defaultPower) {
+        super(GateTypes.XOR,numOfInputs,numOfOutputs,defaultPower);
+    }
+    
+    @Override public boolean generateOutput() {
+        boolean isOr = false;
+        boolean isAnd = true;
+        for (int i = 0; i < super.inputs.length; i++) {
+            Gate currentGate = super.inputs[i];
+            if (currentGate != null) { isAnd = isAnd && currentGate.on; }
+            if (currentGate.on) { isOr = true; }
+        }
+        return !(isOr && !isAnd);
+    }
+}
+
+
+class Not extends Gate {
+    
+    public Not(boolean defaultPower) {
         super(GateTypes.NOT,1,1,defaultPower);
     }
     
