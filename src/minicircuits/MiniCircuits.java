@@ -1,82 +1,39 @@
 
 package minicircuits;
 
-
-class Gate {
-    
-    boolean on;
-    String name;
-    
-    Gate[] inputs;
-    Gate[] outputs;
-    
-    public Gate(String name,int numOfInputs,int numOfOutputs) {
-        this.on = true;
-        this.name = name;
-        inputs = new Gate[numOfInputs];
-        outputs = new Gate[numOfOutputs];
-    }
-
-    public boolean generateOutput() {
-        return false;
-    }
-    
-    public void addGate(Gate newGate) {
-        for (int i = 0; i < this.inputs.length; i++) {
-            if (this.inputs[i] == null) {
-                this.inputs[i] = newGate;
-                System.out.println("Gate added");
-                break;
-            }
-        }
-    }
-    
-    @Override public String toString(){
-        return "-------------------------\nGate Name: " + this.name 
-                + "\nPower status: " + this.on 
-                + "\nInputs: " + this.inputs.length
-                + "\nOutputs: " + this.outputs.length
-                + "\n-------------------------\n";
-    }
-}
-
-class AndGate extends Gate {
-    
-    public AndGate(int numOfInputs,int numOfOutputs) {
-        super("And",numOfInputs,numOfOutputs);
-    }
-    
-    @Override public boolean generateOutput() {
-        
-        boolean output = true;
-        
-        for (int i = 0; i < super.inputs.length; i++) {
-            Gate currentGate = super.inputs[i];
-            
-            if (currentGate != null) {
-                output = output && currentGate.on;
-            } else {
-                System.out.println("empty input");
-                break;
-            }
-        }
-        
-        return output;
-    }
-}
 public class MiniCircuits {
     
-    public static void main(String[] args) {
+    public static void testData() {
+        AndGate andGate = new AndGate(0,0,false);
+        AndGate andGate2 = new AndGate(0,0,false);
+        AndGate andGate3 = new AndGate(0,0,true);  
+        AndGate andGate4 = new AndGate(3,3,false);
         
-        AndGate andGate = new AndGate(0,0);
-        AndGate andGate2 = new AndGate(0,0);
-        AndGate andGate3 = new AndGate(0,0);  
-        AndGate andGate4 = new AndGate(3,3);
+        OrGate OrGate1 = new OrGate(0,0,true);
+        OrGate OrGate2 = new OrGate(0,0,false);
+        OrGate OrGate3 = new OrGate(0,0,false);  
+        OrGate OrGate4 = new OrGate(3,3,false);
         
         andGate4.addGate(andGate);
         andGate4.addGate(andGate2);
         andGate4.addGate(andGate3);
         
+        OrGate4.addGate(OrGate1);
+        OrGate4.addGate(OrGate2);
+        OrGate4.addGate(OrGate3);
+        
+        NotGate newNot = new NotGate(false);
+        newNot.addGate(OrGate2);
+        
+        System.out.println("---NOT GATE---");
+        System.out.println(newNot.generateOutput());
+        System.out.println("---AND GATE---");
         System.out.println(andGate4.generateOutput());
+        System.out.println("---OR GATE---");
+        System.out.println(OrGate4.generateOutput());
+    }
+    
+    public static void main(String[] args) {    
+        testData();
     }
 }
