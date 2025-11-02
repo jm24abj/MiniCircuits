@@ -3,6 +3,8 @@ package miniui;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 
 public class MiniUI {
     
@@ -18,10 +20,9 @@ public class MiniUI {
     public static void createMenuBar(JFrame window) {
         JMenuBar menu = new JMenuBar();
         menu.setBackground(Color.WHITE);
+        // file icon
         
         JMenu file = new JMenu("File");
-        JMenu edit = new JMenu("Edit");
-        JMenu help = new JMenu("Help");
         
         JMenuItem load = new JMenuItem("Load");
         JMenuItem save = new JMenuItem("Save");
@@ -30,6 +31,16 @@ public class MiniUI {
         file.add(load);
         file.add(save);
         file.add(exit);
+        
+        // edit icon
+        
+        JMenu edit = new JMenu("Edit");
+        
+        // help icon
+        
+        JMenu help = new JMenu("Help");
+        
+        // adding icons to menu bar
         
         menu.add(file);
         menu.add(edit);
@@ -45,7 +56,7 @@ public class MiniUI {
         window.add(topbar,BorderLayout.NORTH);
     }
     
-    public static DefaultMutableTreeNode getBasicComponents() {
+    public static DefaultMutableTreeNode createBasicComponents() {
         DefaultMutableTreeNode basicComponents = new DefaultMutableTreeNode("Core");
         
         DefaultMutableTreeNode and = new DefaultMutableTreeNode("AND");
@@ -65,7 +76,7 @@ public class MiniUI {
         return basicComponents;
     }
     
-    public static DefaultMutableTreeNode getCommonComponents() {
+    public static DefaultMutableTreeNode createCommonComponents() {
         DefaultMutableTreeNode commonComponents = new DefaultMutableTreeNode("Common");
             
         DefaultMutableTreeNode adder = new DefaultMutableTreeNode("ADDER");
@@ -81,7 +92,7 @@ public class MiniUI {
         return commonComponents;
     }
     
-    public static DefaultMutableTreeNode getMiscComponents() {
+    public static DefaultMutableTreeNode createMiscComponents() {
         DefaultMutableTreeNode miscComponents = new DefaultMutableTreeNode("Misc");
         
         DefaultMutableTreeNode led = new DefaultMutableTreeNode("LED");
@@ -93,7 +104,7 @@ public class MiniUI {
         return miscComponents;
     }
     
-    public static DefaultMutableTreeNode getUserComponents() {
+    public static DefaultMutableTreeNode createUserComponents() {
         DefaultMutableTreeNode userDefined = new DefaultMutableTreeNode("Custom");
         DefaultMutableTreeNode err = new DefaultMutableTreeNode("");
         userDefined.add(err);
@@ -101,15 +112,20 @@ public class MiniUI {
     }
     
     public static Panel creatSidePanel(JFrame window) {
+        
+        String[] basicCompList = {"AND","OR","NOT","NAND","XOR","XNOR"};
+        String[] commonCompList = {"ADDER","SUBTRACTOR","SPLITTER","MEMORY"};
+        String[] miscCompList = {"LEDOR","PROBE"};
+        
         Panel panel = new Panel(); 
         panel.setBackground(Color.WHITE);
         panel.setPreferredSize(new Dimension(200,100));
         
         DefaultMutableTreeNode miniCircuits = new DefaultMutableTreeNode("Mini_Circuits");
-        DefaultMutableTreeNode basicComponents = getBasicComponents();
-        DefaultMutableTreeNode common = getCommonComponents();
-        DefaultMutableTreeNode userDefined = getUserComponents();
-        DefaultMutableTreeNode misc = getMiscComponents();
+        DefaultMutableTreeNode basicComponents = createBasicComponents();
+        DefaultMutableTreeNode common = createCommonComponents();
+        DefaultMutableTreeNode userDefined = createUserComponents();
+        DefaultMutableTreeNode misc = createMiscComponents();
         
         miniCircuits.add(basicComponents);
         miniCircuits.add(common);
@@ -118,6 +134,34 @@ public class MiniUI {
         
         JTree fileTree = new JTree(miniCircuits);
         fileTree.setBounds(25,25,200,200);
+        
+        fileTree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                Object object = e.getPath().getLastPathComponent(); 
+                if (object instanceof DefaultMutableTreeNode){ 
+                    DefaultMutableTreeNode selected = (DefaultMutableTreeNode) object; 
+                    
+                    for (int i = 0; i < basicCompList.length; i++) {
+                        if (selected.toString().equals(basicCompList[i])) {
+                            System.out.println(selected.toString());
+                        }
+                    }
+                    
+                    for (int i = 0; i < commonCompList.length; i++) {
+                        if (selected.toString().equals(commonCompList[i])) {
+                            System.out.println(selected.toString());
+                        }
+                    }
+                    
+                    for (int i = 0; i < miscCompList.length; i++) {
+                        if (selected.toString().equals(miscCompList[i])) {
+                            System.out.println(selected.toString());
+                        }
+                    }
+                }
+            }
+        });
         
         panel.add(fileTree,BorderLayout.WEST);
         
