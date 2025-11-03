@@ -120,6 +120,9 @@ public class MiniUI {
         Panel panel = new Panel(); 
         panel.setBackground(Color.WHITE);
         panel.setPreferredSize(new Dimension(200,100));
+        panel.setMinimumSize( new Dimension(100, (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2.1)));
+        GridBagLayout gbl = new GridBagLayout();        
+        panel.setLayout(gbl);
         
         DefaultMutableTreeNode miniCircuits = new DefaultMutableTreeNode("Mini_Circuits");
         DefaultMutableTreeNode basicComponents = createBasicComponents();
@@ -163,21 +166,67 @@ public class MiniUI {
             }
         });
         
-        panel.add(fileTree,BorderLayout.WEST);
+        JLabel newLabel = new JLabel("Components");
+        newLabel.setFont(new Font("Roboto", Font.BOLD, 12));
+        
+        panel.add(newLabel,new GridBagConstraints(
+            0, 0,                           //cell for top left corner
+            1, 1,                           //cells to span
+            1, 0,                   //spacing wieght
+            GridBagConstraints.NORTH,  //where to anchor the component in the cell
+            GridBagConstraints.CENTER,  //how to fill extra space
+            new Insets(5, 0, 0, 0),         //insets for the cell
+            0, 0)
+        );
+        
+        panel.add(fileTree,new GridBagConstraints(
+            0, 1,                           //cell for top left corner
+            1, 1,                           //cells to span
+            1, 1,                   //spacing wieght
+            GridBagConstraints.NORTH,  //where to anchor the component in the cell
+            GridBagConstraints.CENTER,  //how to fill extra space
+            new Insets(10, 0, 0, 0),         //insets for the cell
+            0, 0)
+        );
+      
         
         return panel;
     }
     
-    public static Panel createCircuitArea(JFrame window) {
-        Panel pane2 = new Panel();
-        pane2.setBackground(Color.WHITE);
-        return pane2;
+    public static Panel createComponentAttributeDisplay(JFrame window) {
+        Panel panel = new Panel(); 
+        panel.setBackground(Color.WHITE);
+        
+        JLabel newLabel = new JLabel("Attributes");
+        newLabel.setFont(new Font("Roboto", Font.BOLD, 12));
+        
+        panel.add(newLabel,BorderLayout.NORTH);
+        
+        return panel;
+    }
+    
+    public static JTabbedPane createCircuitArea(JFrame window) {
+        JTabbedPane tabPane = new JTabbedPane();
+        tabPane.setBackground(Color.WHITE);
+        tabPane.setMinimumSize( new Dimension((int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.75) , 0));
+        
+        Panel panel = new Panel(); 
+        panel.setBackground(Color.WHITE);
+        
+        Panel panel2 = new Panel(); 
+        panel2.setBackground(Color.WHITE);
+        
+        tabPane.addTab("unsaved.circ*", panel);
+        tabPane.addTab("circuit1.circ", panel2);
+        
+        return tabPane;
     }
     
     public static void createMain(JFrame window) {
         // contains file structure for all of the circuit components as well as area to place circuit
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,creatSidePanel(window),createCircuitArea(window));
-        window.getContentPane().add(splitPane);
+        JSplitPane splitPane1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT,creatSidePanel(window),createComponentAttributeDisplay(window));
+        JSplitPane splitPane2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,splitPane1,createCircuitArea(window));
+        window.getContentPane().add(splitPane2);
     }
    
     public static void initialiseUI() {
