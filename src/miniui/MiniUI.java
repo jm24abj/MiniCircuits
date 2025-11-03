@@ -6,7 +6,27 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
+class AttributeHolder {
+    
+    JLabel nameOfComponent;
+    
+    public AttributeHolder(JLabel comp) {
+        this.nameOfComponent = comp;
+        nameOfComponent.setFont(new Font("Roboto", Font.BOLD, 12));
+    }
+    
+    public void changeComponent(String nameOfComponent) {
+        this.nameOfComponent.setText("Attributes : " + nameOfComponent);
+    }
+    
+    public JLabel getLabel() {
+        return this.nameOfComponent;
+    }
+}
+
 public class MiniUI {
+    
+    static AttributeHolder panelData = new AttributeHolder(new JLabel("Attributes : N/A"));
     
     public static JFrame createWindow() {
         JFrame window = new JFrame();
@@ -115,7 +135,7 @@ public class MiniUI {
         
         String[] basicCompList = {"AND","OR","NOT","NAND","XOR","XNOR"};
         String[] commonCompList = {"ADDER","SUBTRACTOR","SPLITTER","MEMORY"};
-        String[] miscCompList = {"LEDOR","PROBE"};
+        String[] miscCompList = {"LED","PROBE"};
         
         Panel panel = new Panel(); 
         panel.setBackground(Color.WHITE);
@@ -148,18 +168,21 @@ public class MiniUI {
                     for (int i = 0; i < basicCompList.length; i++) {
                         if (selected.toString().equals(basicCompList[i])) {
                             System.out.println(selected.toString());
+                            panelData.changeComponent(selected.toString());
                         }
                     }
                     
                     for (int i = 0; i < commonCompList.length; i++) {
                         if (selected.toString().equals(commonCompList[i])) {
                             System.out.println(selected.toString());
+                            panelData.changeComponent(selected.toString());
                         }
                     }
                     
                     for (int i = 0; i < miscCompList.length; i++) {
                         if (selected.toString().equals(miscCompList[i])) {
                             System.out.println(selected.toString());
+                            panelData.changeComponent(selected.toString());
                         }
                     }
                 }
@@ -197,10 +220,7 @@ public class MiniUI {
         Panel panel = new Panel(); 
         panel.setBackground(Color.WHITE);
         
-        JLabel newLabel = new JLabel("Attributes");
-        newLabel.setFont(new Font("Roboto", Font.BOLD, 12));
-        
-        panel.add(newLabel,BorderLayout.NORTH);
+        panel.add(panelData.getLabel(),BorderLayout.NORTH);
         
         return panel;
     }
