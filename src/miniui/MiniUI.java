@@ -167,21 +167,18 @@ public class MiniUI {
                     
                     for (int i = 0; i < basicCompList.length; i++) {
                         if (selected.toString().equals(basicCompList[i])) {
-                            System.out.println(selected.toString());
                             panelData.changeComponent(selected.toString());
                         }
                     }
                     
                     for (int i = 0; i < commonCompList.length; i++) {
                         if (selected.toString().equals(commonCompList[i])) {
-                            System.out.println(selected.toString());
                             panelData.changeComponent(selected.toString());
                         }
                     }
                     
                     for (int i = 0; i < miscCompList.length; i++) {
                         if (selected.toString().equals(miscCompList[i])) {
-                            System.out.println(selected.toString());
                             panelData.changeComponent(selected.toString());
                         }
                     }
